@@ -49,10 +49,11 @@ server {
     }
 
     location ~* \.(mp4|webm)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
+        expires 7d;
+        add_header Cache-Control "public, must-revalidate";
         access_log off;
         add_header Accept-Ranges bytes;
+        add_header ETag on;
     }
 
     location ~* \.html$ {

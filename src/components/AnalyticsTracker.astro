@@ -1,0 +1,20 @@
+---
+---
+
+<script>
+  // Cargar analytics DESPUÉS de que todo lo crítico esté listo
+  const loadAnalytics = () => {
+    import('../lib/analytics').then(({ trackPageView }) => {
+      trackPageView();
+    });
+  };
+
+  // Esperar a que la página esté completamente interactiva
+  if (document.readyState === 'complete') {
+    setTimeout(loadAnalytics, 2000);
+  } else {
+    window.addEventListener('load', () => {
+      setTimeout(loadAnalytics, 2000);
+    });
+  }
+</script>

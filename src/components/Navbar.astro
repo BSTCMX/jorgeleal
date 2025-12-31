@@ -1,0 +1,80 @@
+<nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-4">
+      <a href="/" class="flex items-center group relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-blue-600/0 via-purple-600/20 to-blue-600/0 dark:from-blue-500/0 dark:via-purple-500/30 dark:to-blue-500/0 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        
+        <div class="relative">
+          <div class="absolute -inset-2 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-blue-600/10 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-blue-500/20 rounded-full blur-md"></div>
+          <img 
+            src="/mapachermoso.svg" 
+            alt="Jorge Leal" 
+            class="h-12 w-auto md:h-16 relative transition-transform duration-300 group-hover:scale-105"
+            loading="eager"
+            fetchpriority="high"
+            width="48"
+            height="48"
+          />
+        </div>
+      </a>
+      
+      <div class="flex items-center gap-3">
+        <button 
+          id="langToggle"
+          type="button" 
+          class="p-3 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 hover:from-gray-200 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-800 transition-all duration-300 shadow-sm hover:shadow-md border border-gray-200/50 dark:border-gray-700/50"
+          aria-label="Toggle language"
+        >
+          <span id="langIcon" class="font-medium text-sm bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">ES</span>
+        </button>
+        
+        <button 
+          id="themeToggle"
+          type="button"
+          class="p-3 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 hover:from-gray-200 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-800 transition-all duration-300 shadow-sm hover:shadow-md border border-gray-200/50 dark:border-gray-700/50"
+          aria-label="Toggle theme"
+        >
+          <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  import { trackLanguageChange, trackThemeChange } from '../lib/analytics';
+  
+  const langToggle = document.getElementById('langToggle');
+  const langIcon = document.getElementById('langIcon');
+  
+  langToggle?.addEventListener('click', () => {
+    window.currentLang = window.currentLang === 'es' ? 'en' : 'es';
+    localStorage.setItem('language', window.currentLang);
+    if (langIcon) langIcon.textContent = window.currentLang.toUpperCase();
+    if (typeof window.updateTexts === 'function') window.updateTexts();
+    
+    // Disparar evento personalizado para que otros componentes se enteren
+    document.dispatchEvent(new CustomEvent('languageChanged'));
+    
+    trackLanguageChange(window.currentLang);
+  });
+
+  const themeToggle = document.getElementById('themeToggle');
+  
+  themeToggle?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    if (newTheme === 'dark') {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+    
+    localStorage.setItem('theme', newTheme);
+    trackThemeChange(newTheme);
+  });
+</script>

@@ -1,0 +1,21 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center space-y-2">
+      <p class="text-gray-600 dark:text-gray-400">
+        <span data-i18n="footer.contact">Contact</span>: 
+        <a href="mailto:jlealcornejo@gmail.com" class="text-blue-600 dark:text-blue-400 hover:underline">
+          jlealcornejo@gmail.com
+        </a>
+      </p>
+      <p class="text-gray-600 dark:text-gray-400">
+        © {currentYear} Jorge Leal. <span data-i18n="footer.builtWith">Built with</span>
+        <a href="https://astro.build" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Astro</a>
+        & ❤️
+      </p>
+    </div>
+  </div>
+</footer>

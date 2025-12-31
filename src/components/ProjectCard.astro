@@ -1,0 +1,188 @@
+---
+interface Props {
+  title: string;
+  descriptionEs: string;
+  descriptionEn: string;
+  image?: string;
+  video?: string;
+  poster?: string;
+  link?: string;
+  tags?: string[];
+}
+
+const { title, descriptionEs, descriptionEn, image, video, poster, link, tags = [] } = Astro.props;
+const cardId = title.toLowerCase().replace(/\s+/g, '-');
+---
+
+<div class="project-card reveal group relative bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-800 dark:to-gray-900/50 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]">
+  
+  {link ? (
+    <a href={link} target="_blank" rel="noopener noreferrer" class="block relative overflow-hidden h-64">
+      <div class="relative h-full w-full">
+        {video ? (
+          <div class="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+            <video
+              id={`video-${cardId}`}
+              class="max-w-full max-h-full object-contain transition-all duration-500"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster={poster}
+            >
+              <source src={video} type="video/webm" />
+              <source src={video.replace('.webm', '.mp4')} type="video/mp4" />
+            </video>
+          </div>
+        ) : (
+          <img 
+            src={image} 
+            alt={title}
+            class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+            loading="lazy"
+            width="400"
+            height="256"
+          />
+        )}
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600/0 via-purple-600/0 to-blue-600/0 group-hover:from-blue-600/20 group-hover:via-purple-600/20 group-hover:to-blue-600/20 rounded-2xl blur-xl transition-all duration-500 -z-10"></div>
+      </div>
+    </a>
+  ) : (
+    <div class="block relative overflow-hidden cursor-default h-64">
+      <div class="relative h-full w-full">
+        {video ? (
+          <div class="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+            <video
+              id={`video-${cardId}`}
+              class="max-w-full max-h-full object-contain transition-all duration-500"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster={poster}
+            >
+              <source src={video} type="video/webm" />
+              <source src={video.replace('.webm', '.mp4')} type="video/mp4" />
+            </video>
+          </div>
+        ) : image ? (
+          <img 
+            src={image} 
+            alt={title}
+            class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+            loading="lazy"
+            width="400"
+            height="256"
+          />
+        ) : null}
+        <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600/0 via-purple-600/0 to-blue-600/0 group-hover:from-blue-600/20 group-hover:via-purple-600/20 group-hover:to-blue-600/20 rounded-2xl blur-xl transition-all duration-500 -z-10"></div>
+      </div>
+    </div>
+  )}
+  
+  <div class="p-6 relative">
+    <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
+      {link ? (
+        <a href={link} target="_blank" rel="noopener noreferrer" class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
+          {title}
+        </a>
+      ) : (
+        <span>{title}</span>
+      )}
+    </h3>
+    
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags.map(tag => (
+          <span class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-700 dark:text-blue-300 rounded-full border border-blue-100/50 dark:border-blue-800/50">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+    
+    <div class="flex gap-3 mb-4">
+      {link ? (
+        <a 
+          href={link} 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition-all duration-300 text-sm font-medium shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+        >
+          <span data-i18n="projects.viewSite">Ver sitio</span> →
+        </a>
+      ) : (
+        <span class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-lg text-sm font-medium cursor-not-allowed">
+          <span data-i18n="projects.privateProject">Proyecto privado</span>
+        </span>
+      )}
+      
+      <button 
+        class="toggle-desc-btn px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg transition-all duration-300 text-sm font-medium border border-gray-200 dark:border-gray-700"
+        data-target={cardId}
+      >
+        <span class="read-more-text" data-i18n="projects.readMore">Leer más</span>
+        <span class="read-less-text hidden" data-i18n="projects.readLess">Leer menos</span>
+      </button>
+    </div>
+    
+    <div id={`desc-${cardId}`} class="description-content hidden mt-4 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
+      <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed whitespace-pre-line">
+        <span data-project-desc-es style="display: none;">{descriptionEs}</span>
+        <span data-project-desc-en style="display: none;">{descriptionEn}</span>
+        <span data-project-desc-current>{descriptionEs}</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Intersection Observer para lazy load de videos
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const video = entry.target as HTMLVideoElement;
+          video.load(); // Cargar el video solo cuando sea visible
+          videoObserver.unobserve(video);
+        }
+      });
+    }, { rootMargin: '50px' });
+
+    // Play video on hover
+    const videos = document.querySelectorAll('video[id^="video-"]');
+    videos.forEach(video => {
+      videoObserver.observe(video);
+      
+      const card = video.closest('.project-card');
+      
+      card?.addEventListener('mouseenter', () => {
+        (video as HTMLVideoElement).play().catch(() => {});
+      });
+      
+      card?.addEventListener('mouseleave', () => {
+        (video as HTMLVideoElement).pause();
+        (video as HTMLVideoElement).currentTime = 0;
+      });
+    });
+
+    // Toggle "Leer más/menos"
+    const toggleBtns = document.querySelectorAll('.toggle-desc-btn');
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = (btn as HTMLElement).dataset.target;
+        const desc = document.getElementById(`desc-${target}`);
+        const readMoreText = btn.querySelector('.read-more-text');
+        const readLessText = btn.querySelector('.read-less-text');
+        
+        if (desc) {
+          desc.classList.toggle('hidden');
+          readMoreText?.classList.toggle('hidden');
+          readLessText?.classList.toggle('hidden');
+        }
+      });
+    });
+  });
+</script>

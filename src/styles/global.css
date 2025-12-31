@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* Custom variant for dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* CRITICAL: Hacer visible el body después de que Tailwind cargue */
+@layer base {
+  body {
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: visibility 0.2s linear, opacity 0.2s linear;
+  }
+}
+
+/* Font optimization */
+@supports (font-variation-settings: normal) {
+  * {
+    font-feature-settings: "kern";
+  }
+}
+
+/* Ensure fonts load with swap */
+@font-face {
+  font-display: swap;
+}
+
+/* Import animations at the end */
+@import "./animations.css";

@@ -1,0 +1,154 @@
+---
+import '../styles/global.css';
+import AnalyticsTracker from '../components/AnalyticsTracker.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { 
+  title, 
+  description = "Build Engineer & Data Analyst Enthusiast. Desarrollador full-stack especializado en arquitecturas modernas, IA y análisis de datos.",
+  image = "/mapachermoso.svg"
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- CRITICAL CSS INLINED para LCP inmediato -->
+    <style is:inline>
+      body {
+        visibility: hidden;
+        opacity: 0;
+        margin: 0;
+        padding: 0;
+      }
+      /* Estilos mínimos para el LCP (imagen de perfil) */
+      .lcp-optimized {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      /* Asegurar que el contenedor del LCP esté listo */
+      .min-h-screen {
+        min-height: 100vh;
+      }
+      .flex {
+        display: flex;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-center {
+        justify-content: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+    </style>
+    
+    <!-- CRITICAL: Aplicar dark mode INMEDIATAMENTE -->
+    <script is:inline>
+      const theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+      if(theme==='dark')document.documentElement.classList.add('dark');
+      
+      // Hacer visible el body después de que los estilos críticos carguen
+      setTimeout(() => {
+        document.body.style.visibility = 'visible';
+        document.body.style.opacity = '1';
+      }, 50);
+    </script>
+    
+    <!-- Bing Webmaster Verification -->
+    <meta name="msvalidate.01" content="333B6076B4E86DE80F2D93EE56A22664" />
+    
+    <!-- Preconnect para analytics -->
+    <link rel="preconnect" href="https://databoard-analytics.fly.dev" crossorigin />
+    <link rel="dns-prefetch" href="https://databoard-analytics.fly.dev" />
+    
+    <!-- PRELOAD CRÍTICO: Imagen LCP PRIMERO -->
+    <link rel="preload" href="/images/fotocvdev-lcp.webp" as="image" fetchpriority="high" />
+    <link rel="preload" href="/mapachermoso.svg" as="image" fetchpriority="high" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/faviconwhite32.ico" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.site)} />
+    
+    <!-- Generator -->
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title}</title>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <slot />
+    
+    <!-- Analytics Tracker (carga MUY diferida) -->
+    <AnalyticsTracker />
+    <ScrollReveal />
+    
+    <script>
+      import { languages, defaultLang } from '../i18n/index.js';
+      
+      window.i18n = { languages, defaultLang };
+      window.currentLang = localStorage.getItem('language') || defaultLang;
+      
+      window.updateTexts = function() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          const keys = key.split('.');
+          let value = window.i18n.languages[window.currentLang];
+          
+          for (const k of keys) {
+            value = value?.[k];
+          }
+          
+          if (value) el.textContent = value;
+        });
+        
+        document.querySelectorAll('[data-project-desc-current]').forEach(el => {
+          const parent = el.parentElement;
+          const esDesc = parent.querySelector('[data-project-desc-es]');
+          const enDesc = parent.querySelector('[data-project-desc-en]');
+          
+          if (window.currentLang === 'es' && esDesc) {
+            el.textContent = esDesc.textContent;
+          } else if (window.currentLang === 'en' && enDesc) {
+            el.textContent = enDesc.textContent;
+          }
+        });
+      };
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', window.updateTexts);
+      } else {
+        window.updateTexts();
+      }
+    </script>
+  </body>
+</html>

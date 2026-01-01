@@ -2,19 +2,87 @@
 ---
 
 <script>
-  // Cargar analytics DESPUÉS de que todo lo crítico esté listo
+  // Cargar analytics DESPUÉS de que LCP se complete
+  // Usa PerformanceObserver para detectar LCP en tiempo real
   const loadAnalytics = () => {
     import('../lib/analytics').then(({ trackPageView }) => {
       trackPageView();
+    }).catch(() => {
+      // Silently fail if analytics can't load
     });
   };
 
-  // Esperar a que la página esté completamente interactiva
+  // Detectar LCP usando PerformanceObserver
+  let lcpDetected = false;
+  let lcpObserver = null;
+
+  const waitForLCP = () => {
+    // Si PerformanceObserver no está disponible, usar fallback
+    if (typeof PerformanceObserver === 'undefined') {
+      // Fallback: esperar 3 segundos y cargar analytics
+      setTimeout(() => {
+        deferAnalytics();
+      }, 3000);
+      return;
+    }
+
+    try {
+      // Observar LCP en tiempo real
+      lcpObserver = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        
+        // LCP detectado
+        if (lastEntry && !lcpDetected) {
+          lcpDetected = true;
+          lcpObserver.disconnect();
+          
+          // Cargar analytics después de LCP
+          deferAnalytics();
+        }
+      });
+
+      // Observar eventos de largest-contentful-paint
+      lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+      // Timeout de seguridad: si LCP no se detecta en 5 segundos, cargar analytics de todas formas
+      setTimeout(() => {
+        if (!lcpDetected && lcpObserver) {
+          lcpDetected = true;
+          lcpObserver.disconnect();
+          deferAnalytics();
+        }
+      }, 5000);
+    } catch (error) {
+      // Si hay error, usar fallback
+      setTimeout(() => {
+        deferAnalytics();
+      }, 3000);
+    }
+  };
+
+  // Función para cargar analytics de forma diferida usando requestIdleCallback
+  const deferAnalytics = () => {
+    // Usar requestIdleCallback si está disponible
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(
+        () => {
+          loadAnalytics();
+        },
+        { timeout: 5000 } // Fallback después de 5s si nunca está idle
+      );
+    } else {
+      // Fallback para navegadores sin requestIdleCallback
+      setTimeout(loadAnalytics, 5000);
+    }
+  };
+
+  // Iniciar detección de LCP
   if (document.readyState === 'complete') {
-    setTimeout(loadAnalytics, 2000);
+    waitForLCP();
   } else {
     window.addEventListener('load', () => {
-      setTimeout(loadAnalytics, 2000);
+      waitForLCP();
     });
   }
 </script>

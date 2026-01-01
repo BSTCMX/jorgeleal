@@ -14,6 +14,12 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        // Body text and UI elements (default)
+        sans: ['Inter Variable', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        // Headings, brand elements, and display text
+        display: ['Plus Jakarta Sans Variable', 'Inter Variable', 'system-ui', 'sans-serif'],
+      },
       animation: {
         'gradient-shift-optimized': 'gradient-shift-optimized 8s ease infinite',
       },

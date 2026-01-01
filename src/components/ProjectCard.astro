@@ -1,5 +1,5 @@
 ---
-import { getVersionedVideo, getVersionedImage } from '../lib/assets';
+import { getVersionedVideo, getVersionedImage, getResponsivePoster } from '../lib/assets';
 
 interface Props {
   title: string;
@@ -18,8 +18,14 @@ const cardId = title.toLowerCase().replace(/\s+/g, '-');
 // Generate versioned URLs for cache busting
 const versionedVideo = video ? getVersionedVideo(video) : null;
 const versionedVideoMp4 = video ? getVersionedVideo(video.replace('.webm', '.mp4')) : null;
-const versionedPoster = poster ? getVersionedImage(poster) : null;
 const versionedImage = image ? getVersionedImage(image) : null;
+
+// Generate responsive poster URLs if poster exists
+const responsivePoster = poster ? getResponsivePoster(poster) : null;
+const posterSrcset = responsivePoster 
+  ? `${responsivePoster.mobile} 256w, ${responsivePoster.desktop} 512w`
+  : null;
+const posterSizes = "(max-width: 768px) 256px, 512px";
 ---
 
 <div class="project-card reveal group relative bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-800 dark:to-gray-900/50 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]">
@@ -36,7 +42,10 @@ const versionedImage = image ? getVersionedImage(image) : null;
               loop
               playsinline
               preload="none"
-              poster={versionedPoster || poster}
+              poster={responsivePoster ? responsivePoster.desktop : (poster ? getVersionedImage(poster) : undefined)}
+              data-poster-mobile={responsivePoster ? responsivePoster.mobile : undefined}
+              data-poster-desktop={responsivePoster ? responsivePoster.desktop : undefined}
+              aria-label={`Video preview of ${title}`}
             >
               <source src={versionedVideo || video} type="video/webm" />
               <source src={versionedVideoMp4 || video?.replace('.webm', '.mp4')} type="video/mp4" />
@@ -67,7 +76,10 @@ const versionedImage = image ? getVersionedImage(image) : null;
               loop
               playsinline
               preload="none"
-              poster={versionedPoster || poster}
+              poster={responsivePoster ? responsivePoster.desktop : (poster ? getVersionedImage(poster) : undefined)}
+              data-poster-mobile={responsivePoster ? responsivePoster.mobile : undefined}
+              data-poster-desktop={responsivePoster ? responsivePoster.desktop : undefined}
+              aria-label={`Video preview of ${title}`}
             >
               <source src={versionedVideo || video} type="video/webm" />
               <source src={versionedVideoMp4 || video?.replace('.webm', '.mp4')} type="video/mp4" />
@@ -146,6 +158,28 @@ const versionedImage = image ? getVersionedImage(image) : null;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Responsive video posters using matchMedia
+    const updateVideoPosters = () => {
+      const videos = document.querySelectorAll<HTMLVideoElement>('video[data-poster-mobile][data-poster-desktop]');
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      
+      videos.forEach(video => {
+        const mobilePoster = video.dataset.posterMobile;
+        const desktopPoster = video.dataset.posterDesktop;
+        
+        if (mobilePoster && desktopPoster) {
+          video.poster = isMobile ? mobilePoster : desktopPoster;
+        }
+      });
+    };
+
+    // Initialize posters on load
+    updateVideoPosters();
+
+    // Listen for viewport changes
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    mediaQuery.addEventListener('change', updateVideoPosters);
+
     // Intersection Observer para lazy load de videos
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

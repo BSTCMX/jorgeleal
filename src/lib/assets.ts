@@ -87,3 +87,33 @@ export function getVersionedImage(imagePath: string): string {
   return getVersionedAsset(imagePath, true);
 }
 
+/**
+ * Generate responsive image srcset for posters
+ * Returns versioned URLs for 256 and 512 versions
+ * 
+ * @param posterPath - Base path to poster (e.g., "/images/posters/musicposter.webp")
+ * @returns Object with mobile and desktop versioned URLs
+ */
+export function getResponsivePoster(posterPath: string): { mobile: string; desktop: string } {
+  const baseName = posterPath.replace(/\.webp$/, '');
+  return {
+    mobile: getVersionedImage(`${baseName}-256.webp`),
+    desktop: getVersionedImage(`${baseName}-512.webp`)
+  };
+}
+
+/**
+ * Generate responsive image srcset for LCP image
+ * Returns versioned URLs for 256 and 512 versions
+ * 
+ * @param basePath - Base path to LCP image (e.g., "/images/fotocvdev-lcp.webp")
+ * @returns Object with mobile and desktop versioned URLs
+ */
+export function getResponsiveLCP(basePath: string): { mobile: string; desktop: string } {
+  const baseName = basePath.replace(/\.webp$/, '');
+  return {
+    mobile: getVersionedImage(`${baseName}-256.webp`),
+    desktop: getVersionedImage(`${baseName}-512.webp`)
+  };
+}
+

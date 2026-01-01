@@ -27,20 +27,83 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     
     <!-- CRITICAL CSS INLINED para LCP inmediato -->
     <style is:inline>
-      body{margin:0;padding:0}
-      /* Solo estilos críticos para imagen LCP - sin duplicar Tailwind */
-      /* Excluir logo de navbar usando :not(.logo) */
-      img[fetchpriority="high"]:not(.logo){
-        width:12rem;height:12rem;
-        border-radius:9999px;
-        object-fit:cover;
-        border:4px solid #fff;
-        box-shadow:0 25px 50px -12px rgba(0,0,0,.25)
+      body {
+        margin: 0;
+        padding: 0;
       }
-      @media(min-width:768px){
-        img[fetchpriority="high"]:not(.logo){width:16rem;height:16rem}
+      /* Estilos mínimos para el LCP (imagen de perfil) */
+      .lcp-optimized {
+        display: block;
+        max-width: 100%;
+        height: auto;
       }
-      .dark img[fetchpriority="high"]:not(.logo){border-color:#1f2937}
+      /* Asegurar que el contenedor del LCP esté listo */
+      .min-h-screen {
+        min-height: 100vh;
+      }
+      .flex {
+        display: flex;
+      }
+      .items-center {
+        align-items: center;
+      }
+      .justify-center {
+        justify-content: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+      /* CRITICAL CSS: Hero section específico para LCP */
+      /* Hero section container */
+      section.min-h-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 6rem;
+      }
+      @media (min-width: 768px) {
+        section.min-h-screen {
+          padding-top: 6rem;
+        }
+      }
+      /* Hero content container */
+      section.min-h-screen > div.max-w-4xl {
+        max-width: 56rem;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+      /* Hero image container (crítico para LCP) */
+      section.min-h-screen > div.max-w-4xl > div.mb-8 {
+        margin-bottom: 2rem;
+        position: relative;
+        display: inline-block;
+      }
+      /* Hero image LCP (elemento crítico) */
+      section.min-h-screen > div.max-w-4xl > div.mb-8 > img {
+        position: relative;
+        width: 12rem;
+        height: 12rem;
+        border-radius: 9999px;
+        object-fit: cover;
+        border-width: 4px;
+        border-style: solid;
+        border-color: rgb(255 255 255);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+      @media (min-width: 768px) {
+        section.min-h-screen > div.max-w-4xl > div.mb-8 > img {
+          width: 16rem;
+          height: 16rem;
+        }
+      }
+      /* Dark mode support para imagen LCP */
+      .dark section.min-h-screen > div.max-w-4xl > div.mb-8 > img {
+        border-color: rgb(31 41 55);
+      }
     </style>
     
     <!-- CRITICAL: Aplicar dark mode INMEDIATAMENTE -->
@@ -56,10 +119,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://databoard-analytics.fly.dev" crossorigin />
     <link rel="dns-prefetch" href="https://databoard-analytics.fly.dev" />
     
-    <!-- PRELOAD CRÍTICO: Logo SVG PRIMERO (navbar visible inmediatamente) -->
-    <link rel="preload" href="/mapachermoso.svg" as="image" fetchpriority="high" />
-    <!-- PRELOAD CRÍTICO: Imagen LCP (versión mobile para carga inicial más rápida) -->
+    <!-- PRELOAD CRÍTICO: Imagen LCP PRIMERO (versión mobile para carga inicial más rápida) -->
     <link rel="preload" href="/images/fotocvdev-lcp-256.webp" as="image" fetchpriority="high" />
+    <link rel="preload" href="/mapachermoso.svg" as="image" fetchpriority="high" />
     
     <!-- PRELOAD FONTES: Self-hosted fonts para performance óptimo -->
     <link rel="preload" href="/fonts/inter-latin-variable-wght.woff2" as="font" type="font/woff2" crossorigin="anonymous" />

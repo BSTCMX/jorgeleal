@@ -56,16 +56,26 @@ export async function trackEvent(eventData: Record<string, any> = {}) {
       ...eventData
     };
     
-    const response = await fetch(`${FASTAPI_URL}/track`, {
+    // Fire-and-forget: no esperar respuesta para no bloquear la ruta crítica
+    // keepalive permite que la request continúe incluso si la página se cierra
+    // priority: 'low' asegura que no compita con recursos críticos
+    fetch(`${FASTAPI_URL}/track`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-API-Key': API_KEY
       },
-      body: JSON.stringify(event)
+      body: JSON.stringify(event),
+      keepalive: true, // Permite que la request continúe incluso si la página se cierra
+      // @ts-ignore - priority no está en todos los tipos pero es soportado
+      priority: 'low' as RequestPriority // Baja prioridad para no competir con recursos críticos
+    }).catch(() => {
+      // Silent failure - no afectar la aplicación
+      // El tracking es opcional y no debe romper la UX
     });
     
-    return response.ok;
+    // Retornar true inmediatamente (fire-and-forget)
+    return true;
   } catch (error) {
     return false;
   }

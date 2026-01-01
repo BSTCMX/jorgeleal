@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "prebuild": "node scripts/optimize-svg.js && node scripts/optimize-posters.js && node scripts/optimize-lcp-responsive.js",
+    "build": "npm run prebuild && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -15,5 +16,8 @@
     "astro": "^5.14.4",
     "sharp": "^0.34.4",
     "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "svgo": "^4.0.0"
   }
 }

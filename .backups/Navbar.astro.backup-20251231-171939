@@ -1,6 +1,6 @@
 <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center py-[16px]">
+    <div class="flex justify-between items-center py-[10px]">
       <a href="/" class="flex items-center group relative">
         <div class="absolute -inset-4 bg-gradient-to-r from-blue-600/0 via-purple-600/20 to-blue-600/0 dark:from-blue-500/0 dark:via-purple-500/30 dark:to-blue-500/0 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         
@@ -9,11 +9,11 @@
           <img 
             src="/mapachermoso.svg" 
             alt="Jorge Leal" 
-            class="logo h-[78px] w-auto md:h-[109px] relative transition-transform duration-300 group-hover:scale-105"
+            class="logo h-[20px] w-auto md:h-[28px] relative transition-transform duration-300 group-hover:scale-105"
             loading="eager"
             fetchpriority="high"
-            width="78"
-            height="78"
+            width="20"
+            height="20"
           />
         </div>
       </a>

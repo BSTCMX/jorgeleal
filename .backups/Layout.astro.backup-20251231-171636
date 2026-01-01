@@ -29,8 +29,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <style is:inline>
       body{margin:0;padding:0}
       /* Solo estilos críticos para imagen LCP - sin duplicar Tailwind */
-      /* Excluir logo de navbar usando :not(.logo) */
-      img[fetchpriority="high"]:not(.logo){
+      img[fetchpriority="high"]{
         width:12rem;height:12rem;
         border-radius:9999px;
         object-fit:cover;
@@ -38,9 +37,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         box-shadow:0 25px 50px -12px rgba(0,0,0,.25)
       }
       @media(min-width:768px){
-        img[fetchpriority="high"]:not(.logo){width:16rem;height:16rem}
+        img[fetchpriority="high"]{width:16rem;height:16rem}
       }
-      .dark img[fetchpriority="high"]:not(.logo){border-color:#1f2937}
+      .dark img[fetchpriority="high"]{border-color:#1f2937}
     </style>
     
     <!-- CRITICAL: Aplicar dark mode INMEDIATAMENTE -->
@@ -56,10 +55,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="preconnect" href="https://databoard-analytics.fly.dev" crossorigin />
     <link rel="dns-prefetch" href="https://databoard-analytics.fly.dev" />
     
-    <!-- PRELOAD CRÍTICO: Logo SVG PRIMERO (navbar visible inmediatamente) -->
-    <link rel="preload" href="/mapachermoso.svg" as="image" fetchpriority="high" />
-    <!-- PRELOAD CRÍTICO: Imagen LCP (versión mobile para carga inicial más rápida) -->
+    <!-- PRELOAD CRÍTICO: Imagen LCP PRIMERO (versión mobile para carga inicial más rápida) -->
     <link rel="preload" href="/images/fotocvdev-lcp-256.webp" as="image" fetchpriority="high" />
+    <link rel="preload" href="/mapachermoso.svg" as="image" fetchpriority="high" />
     
     <!-- PRELOAD FONTES: Self-hosted fonts para performance óptimo -->
     <link rel="preload" href="/fonts/inter-latin-variable-wght.woff2" as="font" type="font/woff2" crossorigin="anonymous" />

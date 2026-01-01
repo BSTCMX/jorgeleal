@@ -21,7 +21,7 @@ export default defineConfig({
     }
   },
   build: {
-    inlineStylesheets: 'auto'
+    inlineStylesheets: 'always' // Inlinar todo el CSS para eliminar bloqueo de renderización
   },
   compressHTML: true
 });

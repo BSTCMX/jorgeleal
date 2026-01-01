@@ -1,0 +1,77 @@
+import sharp from 'sharp';
+import { readdirSync, statSync, existsSync } from 'fs';
+import { join, dirname, basename, extname } from 'path';
+
+const postersDir = './public/images/posters';
+
+/**
+ * Generate responsive versions of poster images
+ * Creates 256x256 (mobile) and 512x512 (tablet/desktop) versions
+ */
+async function optimizePosters() {
+  if (!existsSync(postersDir)) {
+    console.log('⚠️  Posters directory not found, skipping...');
+    return;
+  }
+
+  const files = readdirSync(postersDir);
+  const webpFiles = files.filter(file => file.endsWith('.webp') && !file.includes('-256') && !file.includes('-512'));
+
+  if (webpFiles.length === 0) {
+    console.log('ℹ️  No poster files to optimize');
+    return;
+  }
+
+  console.log(`\n📸 Optimizing ${webpFiles.length} poster(s)...\n`);
+
+  for (const file of webpFiles) {
+    const filePath = join(postersDir, file);
+    const baseName = basename(file, extname(file));
+    
+    try {
+      // Generate 256x256 version (mobile)
+      const mobilePath = join(postersDir, `${baseName}-256.webp`);
+      await sharp(filePath)
+        .resize(256, 256, {
+          fit: 'cover',
+          position: 'center'
+        })
+        .webp({
+          quality: 65, // Optimizado para reducir tamaño sin pérdida perceptible
+          effort: 6,
+          smartSubsample: true
+        })
+        .toFile(mobilePath);
+      
+      const mobileStats = await sharp(mobilePath).metadata();
+      const mobileSize = (await import('fs')).statSync(mobilePath).size;
+      console.log(`  ✓ ${baseName}-256.webp: ${mobileStats.width}x${mobileStats.height} (${(mobileSize / 1024).toFixed(1)} KiB)`);
+
+      // Generate 512x512 version (tablet/desktop)
+      const desktopPath = join(postersDir, `${baseName}-512.webp`);
+      await sharp(filePath)
+        .resize(512, 512, {
+          fit: 'cover',
+          position: 'center'
+        })
+        .webp({
+          quality: 65, // Optimizado para reducir tamaño sin pérdida perceptible
+          effort: 6,
+          smartSubsample: true
+        })
+        .toFile(desktopPath);
+      
+      const desktopStats = await sharp(desktopPath).metadata();
+      const desktopSize = (await import('fs')).statSync(desktopPath).size;
+      console.log(`  ✓ ${baseName}-512.webp: ${desktopStats.width}x${desktopStats.height} (${(desktopSize / 1024).toFixed(1)} KiB)`);
+
+    } catch (error) {
+      console.error(`  ❌ Error optimizing ${file}:`, error.message);
+    }
+  }
+
+  console.log('\n✅ Poster optimization complete!\n');
+}
+
+optimizePosters().catch(console.error);
+

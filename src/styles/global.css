@@ -3,13 +3,36 @@
 /* Custom variant for dark mode */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* CRITICAL: Hacer visible el body después de que Tailwind cargue */
+/* Base styles */
 @layer base {
   body {
-    visibility: visible !important;
-    opacity: 1 !important;
-    transition: visibility 0.2s linear, opacity 0.2s linear;
+    margin: 0;
+    padding: 0;
   }
+}
+
+/* ============================================
+   TYPOGRAPHY SYSTEM - Inter + Plus Jakarta Sans
+   Self-hosted fonts for optimal performance
+   ============================================ */
+
+/* Inter Variable Font - Body text & UI */
+@font-face {
+  font-family: 'Inter Variable';
+  src: url('/fonts/inter-latin-variable-wght.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* Plus Jakarta Sans Variable Font - Headings & Display */
+@font-face {
+  font-family: 'Plus Jakarta Sans Variable';
+  src: url('/fonts/plus-jakarta-sans-latin-variable-wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Font optimization */
@@ -17,11 +40,6 @@
   * {
     font-feature-settings: "kern";
   }
-}
-
-/* Ensure fonts load with swap */
-@font-face {
-  font-display: swap;
 }
 
 /* Import animations at the end */

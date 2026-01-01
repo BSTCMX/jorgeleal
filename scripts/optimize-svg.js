@@ -44,8 +44,9 @@ async function optimizeSVG() {
               removeHiddenElems: true,
               // Remove empty containers
               removeEmptyContainers: true,
-              // Remove unused namespaces
-              removeUnusedNS: true,
+              // Preserve xmlns for Safari iOS compatibility
+              // DO NOT remove xmlns - Safari iOS requires it for SVG rendering
+              removeUnusedNS: false,
               // Remove editor namespaces
               removeEditorsNSData: true,
               // Remove empty text
@@ -81,8 +82,35 @@ async function optimizeSVG() {
       process.exit(1);
     }
 
+    // Post-process: Ensure xmlns is present for Safari iOS compatibility
+    let optimizedSVG = result.data;
+    
+    // Check if xmlns is missing and add it if needed
+    if (!optimizedSVG.includes('xmlns=') && !optimizedSVG.includes('xmlns:')) {
+      // Add xmlns to the root <svg> element
+      optimizedSVG = optimizedSVG.replace(
+        /<svg([^>]*)>/,
+        '<svg$1 xmlns="http://www.w3.org/2000/svg">'
+      );
+      console.log('  ⚠️  Added missing xmlns attribute for Safari iOS compatibility');
+    } else if (!optimizedSVG.includes('xmlns="http://www.w3.org/2000/svg"')) {
+      // Ensure the standard SVG xmlns is present
+      optimizedSVG = optimizedSVG.replace(
+        /<svg([^>]*?)(\sxmlns="[^"]*")?([^>]*)>/,
+        (match, before, existingXmlns, after) => {
+          if (existingXmlns) {
+            // Replace existing xmlns with standard one
+            return `<svg${before} xmlns="http://www.w3.org/2000/svg"${after}>`;
+          }
+          // Add xmlns if missing
+          return `<svg${before} xmlns="http://www.w3.org/2000/svg"${after}>`;
+        }
+      );
+      console.log('  ⚠️  Ensured standard xmlns attribute for Safari iOS compatibility');
+    }
+
     // Write optimized SVG
-    writeFileSync(svgPath, result.data);
+    writeFileSync(svgPath, optimizedSVG);
     
     const optimizedSize = statSync(svgPath).size;
     const reduction = ((originalSize - optimizedSize) / originalSize * 100).toFixed(1);

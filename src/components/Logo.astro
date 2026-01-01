@@ -1,0 +1,26 @@
+---
+// Logo component with inline SVG for Safari iOS compatibility
+// Inline SVG is more reliable than <img> tag in Safari iOS
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const svgPath = join(process.cwd(), 'public', 'mapachermoso.svg');
+let svgContent = readFileSync(svgPath, 'utf8');
+
+// Ensure xmlns is present for Safari iOS
+if (!svgContent.includes('xmlns="http://www.w3.org/2000/svg"')) {
+  svgContent = svgContent.replace(
+    /<svg([^>]*)>/,
+    '<svg$1 xmlns="http://www.w3.org/2000/svg">'
+  );
+}
+
+// Add class to SVG element
+svgContent = svgContent.replace(
+  /<svg([^>]*)>/,
+  '<svg$1 class="logo h-[78px] w-auto md:h-[109px] relative transition-transform duration-300">'
+);
+---
+
+<Fragment set:html={svgContent} />
+

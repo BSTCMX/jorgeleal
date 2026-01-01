@@ -1,7 +1,7 @@
 export const languages = {
   es: {
     hero: {
-      subtitle: "Estudiante de Ingeniería en Desarrollo de Software & Entusiasta de Análisis de Datos",
+      subtitle: "Ingeniería en Desarrollo de Software / Entusiasta de Análisis de Datos",
       role: "",
       downloadCV: "Descargar CV"
     },
@@ -19,7 +19,7 @@ export const languages = {
   },
   en: {
     hero: {
-      subtitle: "Software Development Engineering Student & Data Analysis Enthusiast",
+      subtitle: "Software Development Engineering & Data Analysis Enthusiast",
       role: "",
       downloadCV: "Download CV"
     },

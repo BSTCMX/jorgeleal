@@ -77,3 +77,4 @@ async function optimizeLCPResponsive() {
 
 optimizeLCPResponsive().catch(console.error);
 
+

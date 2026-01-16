@@ -1,7 +1,9 @@
 export default {
   hero: {
-    subtitle: "Build Engineer & Data Analyst Enthusiast",
-    role: "Software engineering student"
+    subtitle: "Software Development Engineering & Data Analysis Enthusiast",
+    role: "",
+    downloadCV: "Download CV",
+    downloadResume: "Download Resume"
   },
   projects: {
     title: "Projects",

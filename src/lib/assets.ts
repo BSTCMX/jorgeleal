@@ -116,4 +116,3 @@ export function getResponsiveLCP(basePath: string): { mobile: string; desktop: s
     desktop: getVersionedImage(`${baseName}-512.webp`)
   };
 }
-

@@ -3,7 +3,8 @@ export const languages = {
     hero: {
       subtitle: "Ingeniería en Desarrollo de Software / Entusiasta de Análisis de Datos",
       role: "",
-      downloadCV: "Descargar CV"
+      downloadCV: "Descargar CV",
+      downloadResume: "Descargar Resume"
     },
     projects: {
       title: "Proyectos",
@@ -21,7 +22,8 @@ export const languages = {
     hero: {
       subtitle: "Software Development Engineering & Data Analysis Enthusiast",
       role: "",
-      downloadCV: "Download CV"
+      downloadCV: "Download CV",
+      downloadResume: "Download Resume"
     },
     projects: {
       title: "Projects",

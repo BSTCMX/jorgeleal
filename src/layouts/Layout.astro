@@ -122,9 +122,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           const enDesc = parent.querySelector('[data-project-desc-en]');
           
           if (window.currentLang === 'es' && esDesc) {
-            el.textContent = esDesc.textContent;
+            el.innerHTML = esDesc.innerHTML;
           } else if (window.currentLang === 'en' && enDesc) {
-            el.textContent = enDesc.textContent;
+            el.innerHTML = enDesc.innerHTML;
           }
         });
       };

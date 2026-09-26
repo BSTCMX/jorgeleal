@@ -1,7 +1,7 @@
 # Build stage
 FROM node:20-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
 
 WORKDIR /app
 
@@ -20,8 +20,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Configuración nginx
 RUN cat > /etc/nginx/conf.d/default.conf <<'EOT'
 server {
-    listen 8080;
-    server_name _;
+    listen 8080 default_server;
+    server_name jorgelealdev.com jorgeleal.fly.dev _;
     root /usr/share/nginx/html;
     index index.html;
 
@@ -70,6 +70,32 @@ server {
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+}
+
+server {
+    listen 8080;
+    server_name www.jorgelealdev.com;
+    location /health {
+        access_log off;
+        return 200 "OK\n";
+        add_header Content-Type text/plain;
+    }
+    location / {
+        return 301 https://jorgelealdev.com$request_uri;
+    }
+}
+
+server {
+    listen 8080;
+    server_name jorgeleal.site www.jorgeleal.site;
+    location /health {
+        access_log off;
+        return 200 "OK\n";
+        add_header Content-Type text/plain;
+    }
+    location / {
+        return 301 https://jorgelealdev.com$request_uri;
+    }
 }
 EOT
 

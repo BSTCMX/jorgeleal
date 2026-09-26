@@ -2,7 +2,7 @@
 
 Portfolio personal construido con [Astro](https://astro.build), Tailwind CSS y TypeScript. Bilingüe (ES/EN), optimizado para performance (98/100 Lighthouse), con sistema de proyectos dinámicos y deploy automatizado en Fly.io.
 
-🌐 **Live:** [jorgeleal.site](https://jorgeleal.site)
+🌐 **Live:** [jorgelealdev.com](https://jorgelealdev.com)
 
 ## 🚀 Características
 
@@ -92,7 +92,7 @@ Este proyecto es privado y personal.
 
 **Jorge Leal**
 - GitHub: [@BSTCMX](https://github.com/BSTCMX)
-- Portfolio: [jorgeleal.site](https://jorgeleal.site)
+- Portfolio: [jorgelealdev.com](https://jorgelealdev.com)
 
 ---
 

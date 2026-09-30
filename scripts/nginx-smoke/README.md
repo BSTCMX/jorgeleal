@@ -2,17 +2,16 @@
 
 Comprueba el comportamiento de nginx en **producción** (`https://jorgelealdev.com`) con `curl`. No hace falta Docker en la máquina local.
 
-## Estado (pre-G1)
+## Estado
 
-| Paso | Estado |
-|------|--------|
-| Gate A preflight | PASS → `03-reportes/preflight.json` |
-| Gate B backup | `00-originales/` + `MANIFEST.sha256` |
-| Gate C script | `scripts/test-nginx-smoke.sh` |
-| Gate D validate | `pnpm validate:nginx` → `03-reportes/validate.json` |
-| PR A (solo tests) | [PR #1](https://github.com/BSTCMX/jorgeleal/pull/1) — **sin cambios nginx** |
+| Fase | Smoke vivo | `validate:nginx` |
+|------|------------|------------------|
+| Pre-G1 (FASE 1) | exit 1, G1 FAIL | `validate.json` PASS |
+| Post-G1 (FASE 2) | exit 0, all checks | `validate-post-g1.json` PASS |
 
-Hoy el smoke **debe fallar** en G1 (soft-200 del SPA):
+FASE 1 cerrada ([PR #1](https://github.com/BSTCMX/jorgeleal/pull/1)). FASE 2: nginx apex (`sitemap.xml` 301 + `try_files =404`) + deploy.
+
+Antes del deploy en producción, el smoke **debe fallar** en G1 (soft-200 del SPA):
 
 - `/sitemap.xml` → 200 HTML igual que `/`
 - Ruta basura → 200 HTML, no 404
@@ -25,7 +24,8 @@ Regresiones (home, `robots.txt`, sitemaps XML reales, `/health`, favicon blanco)
 # Smoke completo (exit 1 = G1 aún no cumplido; exit 0 = listo post-fix)
 pnpm test:nginx
 
-# Gate D: smoke + integridad backup + Dockerfile sin “arreglo” accidental
+# Pre-G1: smoke + backup + Dockerfile con /index.html fallback
+# Post-G1 (Dockerfile parcheado): smoke exit 0 → validate-post-g1.json
 pnpm validate:nginx
 
 # Otra URL (staging, etc.)

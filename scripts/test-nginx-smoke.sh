@@ -151,6 +151,21 @@ else
   fail_reg "/faviconwhite32.ico status=$code"
 fi
 
+# --- Regression: linked static assets ---
+code="$(fetch /cv/CV_JorgeLeal_ES.pdf)"
+if [[ "$code" == "200" ]] && [[ "$(content_type)" == *pdf* ]]; then
+  pass "/cv/CV_JorgeLeal_ES.pdf -> 200 PDF"
+else
+  fail_reg "/cv/CV_JorgeLeal_ES.pdf status=$code ct=$(content_type)"
+fi
+
+code="$(fetch /mapachermoso.svg)"
+if [[ "$code" == "200" ]] && [[ "$(content_type)" == *svg* ]]; then
+  pass "/mapachermoso.svg -> 200 SVG"
+else
+  fail_reg "/mapachermoso.svg status=$code ct=$(content_type)"
+fi
+
 log "---"
 if [[ "$g1_fail" -eq 0 && "$reg_fail" -eq 0 ]]; then
   log "RESULT: all checks passed (G1 + regression)"

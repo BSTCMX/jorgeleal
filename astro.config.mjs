@@ -9,8 +9,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       changefreq: 'weekly',
-      priority: 1,
-      lastmod: new Date(),
+      priority: 0.8,
     }),
   ],
   vite: {

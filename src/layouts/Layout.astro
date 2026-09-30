@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
-import { DEFAULT_OG_IMAGE, PERSON_SAME_AS, SITE_ORIGIN } from '../lib/seo';
+import { DEFAULT_OG_IMAGE, PERSON_SAME_AS } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -13,7 +13,7 @@ interface Props {
 
 const { 
   title, 
-  description = "Portafolio oficial de Jorge Leal: ingeniero de software, análisis de datos y proyectos en producción. CV descargable y casos reales.",
+  description = "Portafolio oficial de Jorge Leal: ingeniero de software, análisis de datos y proyectos en producción. CV descargable.",
   image = DEFAULT_OG_IMAGE,
   jsonLd,
 } = Astro.props;
@@ -74,9 +74,6 @@ const jsonLdScript = jsonLd ? JSON.stringify(jsonLd) : null;
     
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
-    <link rel="alternate" hreflang="es" href={`${SITE_ORIGIN}/`} />
-    <link rel="alternate" hreflang="en" href={`${SITE_ORIGIN}/`} />
-    <link rel="alternate" hreflang="x-default" href={`${SITE_ORIGIN}/`} />
     {PERSON_SAME_AS.map((profile) => (
       <link rel="me" href={profile} />
     ))}
@@ -85,19 +82,14 @@ const jsonLdScript = jsonLd ? JSON.stringify(jsonLd) : null;
     <link rel="icon" type="image/x-icon" href="/faviconwhite32.ico" />
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="profile" />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Jorge Leal" />
     <meta property="og:locale" content="es_MX" />
-    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:image:alt" content="Jorge Leal — ingeniero de software y análisis de datos" />
-    <meta property="profile:first_name" content="Jorge" />
-    <meta property="profile:last_name" content="Leal" />
-    <meta property="profile:username" content="jorgelealdev" />
-    
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
@@ -143,13 +135,26 @@ const jsonLdScript = jsonLd ? JSON.stringify(jsonLd) : null;
         
         document.querySelectorAll('[data-project-desc-current]').forEach(el => {
           const parent = el.parentElement;
-          const esDesc = parent.querySelector('[data-project-desc-es]');
-          const enDesc = parent.querySelector('[data-project-desc-en]');
+          const esDesc = parent?.querySelector('[data-project-desc-es]');
+          const enDesc = parent?.querySelector('[data-project-desc-en]');
           
           if (window.currentLang === 'es' && esDesc) {
             el.innerHTML = esDesc.innerHTML;
           } else if (window.currentLang === 'en' && enDesc) {
             el.innerHTML = enDesc.innerHTML;
+          }
+        });
+
+        document.querySelectorAll('.project-card').forEach(card => {
+          const esSum = card.querySelector('[data-project-summary-es]');
+          const enSum = card.querySelector('[data-project-summary-en]');
+          if (!esSum || !enSum) return;
+          if (window.currentLang === 'en') {
+            esSum.classList.add('hidden');
+            enSum.classList.remove('hidden');
+          } else {
+            enSum.classList.add('hidden');
+            esSum.classList.remove('hidden');
           }
         });
       };

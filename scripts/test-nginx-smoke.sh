@@ -82,8 +82,10 @@ fi
 code="$(fetch /sitemap.xml)"
 if [[ "$code" == "301" || "$code" == "302" || "$code" == "308" ]]; then
   loc="$(awk 'BEGIN{IGNORECASE=1} /^location:/ {print $2; exit}' "$TMP_DIR/hdr" | tr -d '\r')"
-  if [[ "$loc" == *sitemap-index.xml* ]]; then
+  if [[ "$loc" == *sitemap-index.xml* ]] && [[ "$loc" != *:8080* ]]; then
     pass "/sitemap.xml -> redirect to sitemap-index"
+  elif [[ "$loc" == *sitemap-index.xml* ]]; then
+    fail_g1 "/sitemap.xml redirect includes internal port in Location: $loc"
   else
     fail_g1 "/sitemap.xml redirect wrong Location: $loc"
   fi

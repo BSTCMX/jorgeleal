@@ -62,7 +62,7 @@ server {
     }
 
     location = /sitemap.xml {
-        return 301 https://$host/sitemap-index.xml;
+        return 301 https://jorgelealdev.com/sitemap-index.xml;
     }
 
     location / {

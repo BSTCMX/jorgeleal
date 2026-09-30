@@ -11,7 +11,6 @@ export const DEFAULT_OG_IMAGE = '/images/fotocvdev-lcp-512.webp';
 export function buildHomeJsonLd(description: string) {
   const personId = `${SITE_ORIGIN}/#person`;
   const websiteId = `${SITE_ORIGIN}/#website`;
-  const profileId = `${SITE_ORIGIN}/#profilepage`;
 
   return {
     '@context': 'https://schema.org',
@@ -22,7 +21,7 @@ export function buildHomeJsonLd(description: string) {
         url: `${SITE_ORIGIN}/`,
         name: 'Jorge Leal',
         description,
-        inLanguage: ['es', 'en'],
+        inLanguage: 'es',
         publisher: { '@id': personId },
       },
       {
@@ -31,24 +30,9 @@ export function buildHomeJsonLd(description: string) {
         name: 'Jorge Leal',
         url: `${SITE_ORIGIN}/`,
         image: `${SITE_ORIGIN}${DEFAULT_OG_IMAGE}`,
-        jobTitle: 'Software Engineer',
-        knowsAbout: [
-          'Software engineering',
-          'Data analysis',
-          'Web performance',
-          'Machine learning',
-        ],
+        jobTitle: 'Ingeniero de software',
         sameAs: [...PERSON_SAME_AS],
         email: 'mailto:jlealcornejo@gmail.com',
-      },
-      {
-        '@type': 'ProfilePage',
-        '@id': profileId,
-        url: `${SITE_ORIGIN}/`,
-        name: 'Jorge Leal — Portafolio',
-        description,
-        mainEntity: { '@id': personId },
-        isPartOf: { '@id': websiteId },
       },
     ],
   };

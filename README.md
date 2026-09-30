@@ -79,6 +79,8 @@ pnpm test:nginx
 
 Flujo pre-G1 / post-G1, backups y rollback: [`scripts/nginx-smoke/README.md`](scripts/nginx-smoke/README.md).
 
+Indexación Google (Change of Address, sitemap): [`docs/search-console-site-move.md`](docs/search-console-site-move.md).
+
 ## 📊 Métricas de Performance
 
 - **Performance**: 98/100

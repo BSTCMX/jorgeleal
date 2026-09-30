@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { linkify } from '../../lib/text';
+import { buildProjectJsonLd, projectExcerpt, projectPath } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, descriptionEs, descriptionEn, summaryEs, summaryEn, image, link, tags } =
+  entry.data;
+const slug = entry.id;
+const pageUrl = new URL(projectPath(slug), Astro.site).href;
+const excerptEs = summaryEs ?? projectExcerpt(descriptionEs);
+const excerptEn = summaryEn ?? projectExcerpt(descriptionEn);
+const pageTitle = `${title} | Jorge Leal`;
+const pageDescription = excerptEs;
+const jsonLd = buildProjectJsonLd({
+  name: title,
+  description: excerptEs,
+  url: pageUrl,
+  image,
+  sameAs: link,
+});
+const bodyEs = linkify(descriptionEs);
+const bodyEn = linkify(descriptionEn);
+---
+
+<Layout title={pageTitle} description={pageDescription} jsonLd={jsonLd}>
+  <Navbar />
+  <main class="max-w-3xl mx-auto px-4 pt-32 pb-20">
+    <nav class="text-sm text-gray-500 dark:text-gray-400 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400">Inicio</a>
+      <span class="mx-2">/</span>
+      <a href="/#projects" class="hover:text-blue-600 dark:hover:text-blue-400">Proyectos</a>
+      <span class="mx-2">/</span>
+      <span class="text-gray-700 dark:text-gray-200">{title}</span>
+    </nav>
+
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">{title}</h1>
+
+    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+      <span data-project-summary-es>{excerptEs}</span>
+      <span data-project-summary-en class="hidden">{excerptEn}</span>
+    </p>
+
+    {tags.length > 0 && (
+      <ul class="flex flex-wrap gap-2 mb-8">
+        {tags.map((tag) => (
+          <li class="px-3 py-1 text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">
+            {tag}
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <article class="prose prose-gray dark:prose-invert max-w-none text-sm leading-relaxed">
+      <div class="text-gray-600 dark:text-gray-400 whitespace-pre-line">
+        <span data-project-body-es style="display: none;" set:html={bodyEs} />
+        <span data-project-body-en style="display: none;" set:html={bodyEn} />
+        <div data-project-body-current set:html={bodyEs} />
+      </div>
+    </article>
+
+    <div class="mt-10 flex flex-wrap gap-4">
+      {link ? (
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium"
+        >
+          Ver sitio en vivo →
+        </a>
+      ) : null}
+      <a
+        href="/#projects"
+        class="px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200"
+      >
+        ← Todos los proyectos
+      </a>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function syncProjectPageLang() {
+    const lang = window.currentLang || 'es';
+    const summaryEs = document.querySelector('[data-project-summary-es]');
+    const summaryEn = document.querySelector('[data-project-summary-en]');
+    const bodyEs = document.querySelector('[data-project-body-es]');
+    const bodyEn = document.querySelector('[data-project-body-en]');
+    const bodyCurrent = document.querySelector('[data-project-body-current]');
+    if (lang === 'en') {
+      summaryEs?.classList.add('hidden');
+      summaryEn?.classList.remove('hidden');
+      if (bodyEn && bodyCurrent) {
+        bodyCurrent.innerHTML = bodyEn.innerHTML;
+      }
+    } else {
+      summaryEn?.classList.add('hidden');
+      summaryEs?.classList.remove('hidden');
+      if (bodyEs && bodyCurrent) {
+        bodyCurrent.innerHTML = bodyEs.innerHTML;
+      }
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncProjectPageLang);
+  } else {
+    syncProjectPageLang();
+  }
+  const orig = window.updateTexts;
+  window.updateTexts = function () {
+    orig?.();
+    syncProjectPageLang();
+  };
+</script>

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
+import { projectExcerpt } from '../lib/projects';
 
 const allProjects = await getCollection('projects');
 const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
@@ -12,8 +13,13 @@ const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
       <span data-i18n="projects.title">Proyectos</span>
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {projects.map(project => (
-        <ProjectCard {...project.data} />
+      {projects.map((project) => (
+        <ProjectCard
+          slug={project.id}
+          summaryEs={project.data.summaryEs ?? projectExcerpt(project.data.descriptionEs)}
+          summaryEn={project.data.summaryEn ?? projectExcerpt(project.data.descriptionEn)}
+          {...project.data}
+        />
       ))}
     </div>
   </div>

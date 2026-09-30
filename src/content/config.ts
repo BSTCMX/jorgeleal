@@ -4,6 +4,8 @@ const projectsCollection = defineCollection({
   type: 'data',
   schema: z.object({
     title: z.string(),
+    summaryEs: z.string().optional(),
+    summaryEn: z.string().optional(),
     descriptionEs: z.string(),
     descriptionEn: z.string(),
     image: z.string().optional(),

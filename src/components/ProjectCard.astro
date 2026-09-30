@@ -3,7 +3,10 @@ import { getVersionedVideo, getVersionedImage, getResponsivePoster } from '../li
 import { linkify } from '../lib/text';
 
 interface Props {
+  slug: string;
   title: string;
+  summaryEs: string;
+  summaryEn: string;
   descriptionEs: string;
   descriptionEn: string;
   image?: string;
@@ -13,7 +16,8 @@ interface Props {
   tags?: string[];
 }
 
-const { title, descriptionEs, descriptionEn, image, video, poster, link, tags = [] } = Astro.props;
+const { slug, title, summaryEs, summaryEn, descriptionEs, descriptionEn, image, video, poster, link, tags = [] } = Astro.props;
+const projectHref = `/proyectos/${slug}/`;
 const cardId = title.toLowerCase().replace(/\s+/g, '-');
 const linkifiedEs = linkify(descriptionEs);
 const linkifiedEn = linkify(descriptionEn);
@@ -105,14 +109,15 @@ const posterSizes = "(max-width: 768px) 256px, 512px";
   
   <div class="p-6 relative">
     <h3 class="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
-      {link ? (
-        <a href={link} target="_blank" rel="noopener noreferrer" class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
-          {title}
-        </a>
-      ) : (
-        <span>{title}</span>
-      )}
+      <a href={projectHref} class="hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 transition-all duration-300">
+        {title}
+      </a>
     </h3>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed line-clamp-4">
+      <span data-project-summary-es>{summaryEs}</span>
+      <span data-project-summary-en class="hidden">{summaryEn}</span>
+    </p>
     
     {tags.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-4">

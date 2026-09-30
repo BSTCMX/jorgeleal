@@ -7,7 +7,11 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://jorgelealdev.com',
   integrations: [
-    sitemap()
+    sitemap({
+      changefreq: 'weekly',
+      priority: 1,
+      lastmod: new Date(),
+    }),
   ],
   vite: {
     plugins: [tailwindcss()],

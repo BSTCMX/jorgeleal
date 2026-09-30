@@ -6,9 +6,9 @@ const allProjects = await getCollection('projects');
 const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<section id="projects" class="py-20 px-4">
+<section id="projects" class="py-20 px-4" aria-labelledby="projects-heading">
   <div class="max-w-7xl mx-auto">
-    <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent reveal">
+    <h2 id="projects-heading" class="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent reveal">
       <span data-i18n="projects.title">Proyectos</span>
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -2,20 +2,25 @@
 import '../styles/global.css';
 import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
+import { DEFAULT_OG_IMAGE, PERSON_SAME_AS, SITE_ORIGIN } from '../lib/seo';
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
 const { 
   title, 
-  description = "Build Engineer & Data Analyst Enthusiast. Desarrollador full-stack especializado en arquitecturas modernas, IA y análisis de datos.",
-  image = "/mapachermoso.svg"
+  description = "Portafolio oficial de Jorge Leal: ingeniero de software, análisis de datos y proyectos en producción. CV descargable y casos reales.",
+  image = DEFAULT_OG_IMAGE,
+  jsonLd,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
+const jsonLdScript = jsonLd ? JSON.stringify(jsonLd) : null;
 ---
 
 <!doctype html>
@@ -24,6 +29,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="Jorge Leal" />
     
     <!-- CRITICAL CSS INLINED para LCP inmediato -->
     <style is:inline>
@@ -67,23 +74,41 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="es" href={`${SITE_ORIGIN}/`} />
+    <link rel="alternate" hreflang="en" href={`${SITE_ORIGIN}/`} />
+    <link rel="alternate" hreflang="x-default" href={`${SITE_ORIGIN}/`} />
+    {PERSON_SAME_AS.map((profile) => (
+      <link rel="me" href={profile} />
+    ))}
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/faviconwhite32.ico" />
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Jorge Leal" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale:alternate" content="en_US" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content="Jorge Leal — ingeniero de software y análisis de datos" />
+    <meta property="profile:first_name" content="Jorge" />
+    <meta property="profile:last_name" content="Leal" />
+    <meta property="profile:username" content="jorgelealdev" />
     
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content="Jorge Leal — ingeniero de software y análisis de datos" />
+    
+    {jsonLdScript && (
+      <script type="application/ld+json" set:html={jsonLdScript} />
+    )}
     
     <!-- Generator -->
     <meta name="generator" content={Astro.generator} />

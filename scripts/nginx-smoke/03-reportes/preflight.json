@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "live:home",
+      "pass": true,
+      "detail": "200 size=262834"
+    },
+    {
+      "name": "live:robots",
+      "pass": true,
+      "detail": "User-agent: *\nAllow: /\n\nSitemap: https://jorgelealdev.com/sitemap-index.xml"
+    },
+    {
+      "name": "live:sitemap_index",
+      "pass": true,
+      "detail": "200 text/xml"
+    },
+    {
+      "name": "live:sitemap_0",
+      "pass": true,
+      "detail": "200 text/xml"
+    },
+    {
+      "name": "live:health",
+      "pass": true,
+      "detail": "OK\n"
+    },
+    {
+      "name": "fly:health_check",
+      "pass": true,
+      "detail": "passing"
+    },
+    {
+      "name": "live:favicon_white",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "live:soft200",
+      "pass": true,
+      "detail": "sitemap.xml and junk same hash as home"
+    },
+    {
+      "name": "live:favicon_404",
+      "pass": true,
+      "detail": "404 documented"
+    },
+    {
+      "name": "repo:dockerfile_try_files",
+      "pass": true,
+      "detail": "index.html fallback present"
+    },
+    {
+      "name": "repo:dist_sitemap",
+      "pass": true,
+      "detail": "no sitemap.xml, has sitemap-index.xml"
+    }
+  ],
+  "errors": [],
+  "base": "https://jorgelealdev.com",
+  "live_snapshot": {
+    "home": {
+      "path": "/",
+      "status": "200",
+      "content_type": "text/html",
+      "size": 262834,
+      "sha256": "5193af0db759306f0dc72aa7990516ed887daaef1ca91aff4fb34df1a0a644a6",
+      "sha256_full": "5193af0db759306f0dc72aa7990516ed887daaef1ca91aff4fb34df1a0a644a6"
+    },
+    "robots": {
+      "path": "/robots.txt",
+      "status": "200",
+      "content_type": "text/plain",
+      "size": 76,
+      "sha256": "cef5daebf95c1211b6a98a133eeb3e735d876daf742094e96b708452dd18182d",
+      "sha256_full": "cef5daebf95c1211b6a98a133eeb3e735d876daf742094e96b708452dd18182d"
+    },
+    "sitemap_xml": {
+      "path": "/sitemap.xml",
+      "status": "200",
+      "content_type": "text/html",
+      "size": 262834,
+      "sha256": "5193af0db759306f0dc72aa7990516ed887daaef1ca91aff4fb34df1a0a644a6",
+      "sha256_full": "5193af0db759306f0dc72aa7990516ed887daaef1ca91aff4fb34df1a0a644a6"
+    },
+    "sitemap_index": {
+      "path": "/sitemap-index.xml",
+      "status": "200",
+      "content_type": "text/xml",
+      "size": 187,
+      "sha256": "807f75ced6a5f2826e59cd01b4d07e796a7432f2bb7357ee6f2c4bc2b5416d2b",
+      "sha256_full": "807f75ced6a5f2826e59cd01b4d07e796a7432f2bb7357ee6f2c4bc2b5416d2b"
+    },
+    "sitemap_0": {
+      "path": "/sitemap-0.xml",
+      "status": "200",
+      "content_type": "text/xml",
+      "size": 381,
+      "sha256": "c28c1f0729364c14de0335c609c2aff6c9635839254092a2b8ab8512a091b1fd",
+      "sha256_full": "c28c1f0729364c14de0335c609c2aff6c9635839254092a2b8ab8512a091b1fd"
+    },
+    "health": {
+      "path": "/health",
+      "status": "200",
+      "content_type": "application/octet-stream",
+      "size": 3,
+      "sha256": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87",
+      "sha256_full": "a12b7cb43c9d9134b5bb1b35e9096b66775d9e92e7611d1cc92b02edd6782a87"
+    },
+    "favicon_white": {
+      "path": "/faviconwhite32.ico",
+      "status": "200",
+      "content_type": "image/x-icon",
+      "size": 1525,
+      "sha256": "e5ee0052216eda585b5d827c80cdaa2281c52304955befec4e97851ad45cb1b7",
+      "sha256_full": "e5ee0052216eda585b5d827c80cdaa2281c52304955befec4e97851ad45cb1b7"
+    },
+    "favicon": {
+      "path": "/favicon.ico",
+      "status": "404",
+      "content_type": "text/html",
+      "size": 153,
+      "sha256": "d8404620e9b7adb849eef6fa27b485038512e53c3e66a865e18a3dbb8441991d",
+      "sha256_full": "d8404620e9b7adb849eef6fa27b485038512e53c3e66a865e18a3dbb8441991d"
+    },
+    "junk": {
+      "path": "/this-path-should-not-exist-g1",
+      "status": "200",
+      "content_type": "text/html",
+      "size": 262834,
+      "sha256": "5193af0db759306f0dc72aa7990516ed887daaef1ca91aff4fb34df1a0a644a6",
+      "sha256_full": "5193af0db759306f0dc72aa7990516ed887daaef1ca91aff4fb34df1a0a644a6"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "smoke_exit": 0,
+  "post_g1": true,
+  "g1_not_met_expected": false,
+  "errors": [],
+  "smoke_tail": [
+    "PASS: / -> 200 HTML",
+    "PASS: /sitemap.xml -> redirect to sitemap-index",
+    "PASS: /this-path-should-not-exist-g1 -> 404",
+    "PASS: /robots.txt OK",
+    "PASS: /sitemap-index.xml -> 200 XML",
+    "PASS: /sitemap-0.xml -> 200 XML",
+    "PASS: /health OK",
+    "PASS: /faviconwhite32.ico -> 200",
+    "PASS: /cv/CV_JorgeLeal_ES.pdf -> 200 PDF",
+    "PASS: /mapachermoso.svg -> 200 SVG",
+    "---",
+    "RESULT: all checks passed (G1 + regression)"
+  ]
+}

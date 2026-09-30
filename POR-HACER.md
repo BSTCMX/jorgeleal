@@ -24,9 +24,7 @@ Actualizar en **sitio** (`src/content/projects/`) y luego alinear **Resume/CV**:
 
 ## Nginx G1 (soft-200 / sitemap.xml)
 
-- **FASE 1 (listo):** smoke en vivo, backup, `pnpm test:nginx` / `validate:nginx`, PR A → ver `scripts/nginx-smoke/README.md`.
-- **Merge PR A** a `main` no exige `fly deploy` (solo scripts en repo).
-- **FASE 2 (pendiente GO):** fix nginx en `Dockerfile` + `fly deploy` + `pnpm test:nginx` exit 0; rollback desde `scripts/nginx-smoke/00-originales/`.
+- **FASE 1 + FASE 2 (hecho):** [PR #2](https://github.com/BSTCMX/jorgeleal/pull/2), deploy Fly, `pnpm test:nginx` exit 0, `validate-post-g1.json` PASS. Rollback de referencia: `scripts/nginx-smoke/00-originales/Dockerfile`.
 
 ## Ya hecho (dominio sitio)
 

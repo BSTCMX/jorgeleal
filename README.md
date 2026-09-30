@@ -69,6 +69,16 @@ El Dockerfile realiza un build multi-stage:
 1. Build de Astro con Node.js
 2. Servir estáticos con Nginx
 
+### Nginx smoke (G1)
+
+Tras cambios en nginx del `Dockerfile`, validar producción sin Docker:
+
+```bash
+pnpm test:nginx
+```
+
+Flujo pre-G1 / post-G1, backups y rollback: [`scripts/nginx-smoke/README.md`](scripts/nginx-smoke/README.md).
+
 ## 📊 Métricas de Performance
 
 - **Performance**: 98/100

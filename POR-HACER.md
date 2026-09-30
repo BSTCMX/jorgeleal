@@ -2,14 +2,11 @@
 
 Última actualización: 2026-09-30
 
-## Dominio / CV PDF (sandbox)
+## Dominio / CV PDF
 
-Trabajo en: `/Users/Jorge/Documents/cv-jorgelealdev-update/`  
-Candidatos: `02-salida/` (aún no están en `public/cv` ni en Fly).
-
-1. **OK visual + promote** — Tras aprobar PDF: backup de `public/cv`, copiar `02-salida` → `public/cv`, re-validate, `fly deploy`.
-2. **Pulir parche PDF** — Quitar cajita blanca en CV diseñados; igualar tamaño de tipografía del dominio en Resume.
-3. Links clicables a `https://jorgelealdev.com/` ya reañadidos en sandbox; verificar en Preview antes de promover.
+- **Promovido 2026-09-30:** `02-salida/` → `public/cv/` + deploy. Backup previo: `cv-jorgelealdev-update/00-originales/public-cv-before-promote-20260930/`.
+- Links clicables `https://jorgelealdev.com/` en CV diseñados (Resume sin dominio viejo en strings).
+- **Opcional después:** limpiar metadata/struct `@jorgeleal.site` en PDFs diseñados; cajita blanca / tipografía Resume (sandbox).
 
 ## Contenido sitio + CV (repos han cambiado)
 

@@ -1,6 +1,6 @@
 # Por hacer — Jorge Leal (sitio + CV)
 
-Última actualización: 2026-09-26
+Última actualización: 2026-09-30
 
 ## Dominio / CV PDF (sandbox)
 
@@ -21,6 +21,12 @@ Actualizar en **sitio** (`src/content/projects/`) y luego alinear **Resume/CV**:
 7. **Beat Catalogue** — Actualizar ficha desde `/Users/Jorge/Documents/beatcatalogue`.
 8. **LaZalza** — Actualizar ficha (localizar repo / fuente vigente).
 9. **Resume/CV** — Tras fichas del sitio, sincronizar textos de proyectos en DOCX/PDF.
+
+## Nginx G1 (soft-200 / sitemap.xml)
+
+- **FASE 1 (listo):** smoke en vivo, backup, `pnpm test:nginx` / `validate:nginx`, PR A → ver `scripts/nginx-smoke/README.md`.
+- **Merge PR A** a `main` no exige `fly deploy` (solo scripts en repo).
+- **FASE 2 (pendiente GO):** fix nginx en `Dockerfile` + `fly deploy` + `pnpm test:nginx` exit 0; rollback desde `scripts/nginx-smoke/00-originales/`.
 
 ## Ya hecho (dominio sitio)
 

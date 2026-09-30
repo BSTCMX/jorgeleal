@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "smoke_exit": 1,
+  "g1_not_met_expected": true,
+  "errors": [],
+  "smoke_tail": [
+    "FAIL (G1): /this-path-should-not-exist-g1 still soft-200 homepage HTML",
+    "PASS: /robots.txt OK",
+    "PASS: /sitemap-index.xml -> 200 XML",
+    "PASS: /sitemap-0.xml -> 200 XML",
+    "PASS: /health OK",
+    "PASS: /faviconwhite32.ico -> 200",
+    "---",
+    "RESULT: G1 not met yet; regressions OK (expected before nginx fix)"
+  ]
+}

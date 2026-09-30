@@ -7,6 +7,8 @@
     "prebuild": "node scripts/optimize-svg.js && node scripts/optimize-posters.js && node scripts/optimize-lcp-responsive.js",
     "build": "npm run prebuild && astro build",
     "preview": "astro preview",
+    "test:nginx": "bash scripts/test-nginx-smoke.sh",
+    "validate:nginx": "bash scripts/nginx-smoke/run-validate.sh",
     "astro": "astro"
   },
   "dependencies": {

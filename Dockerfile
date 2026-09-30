@@ -61,8 +61,12 @@ server {
         add_header Cache-Control "no-cache, no-store, must-revalidate";
     }
 
+    location = /sitemap.xml {
+        return 301 /sitemap-index.xml;
+    }
+
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files $uri $uri/ =404;
     }
 
     # Security headers
